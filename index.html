@@ -43,6 +43,7 @@
                 <ul class="nav-list">
                     <li><a href="#about" class="nav-link">About</a></li>
                     <li><a href="#skills" class="nav-link">Skills</a></li>
+                    <li><a href="#pipeline" class="nav-link">ETL Pipeline</a></li>
                     <li><a href="#experience" class="nav-link">Experience</a></li>
                     <li><a href="#projects" class="nav-link">Projects</a></li>
                     <li><a href="#certifications" class="nav-link">Certifications</a></li>
@@ -75,7 +76,7 @@
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </a>
-                        <a href="Shubham_Pandey_Resume.pdf" download="Shubham_Pandey_Resume.pdf" class="btn btn-secondary btn-icon" id="download-resume-hero">
+                        <a href="Shubham_Pandey_Resume.pdf" target="_blank" class="btn btn-secondary btn-icon" id="download-resume-hero">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                 <polyline points="7 10 12 15 17 10"></polyline>
@@ -274,6 +275,138 @@
             </div>
         </section>
 
+        <!-- ETL Pipeline Simulator Section -->
+        <section id="pipeline" class="pipeline-section section-padding">
+            <div class="container">
+                <div class="section-prefix">Interactive System</div>
+                <h2 class="section-title">ETL Pipeline Simulator</h2>
+                
+                <div class="pipeline-grid fade-up-init">
+                    <!-- Control panel and scenario selector -->
+                    <div class="pipeline-card pipeline-controls">
+                        <div class="card-glow"></div>
+                        <h3 class="pipeline-card-title">Pipeline Settings</h3>
+                        
+                        <div class="control-group">
+                            <label for="pipeline-scenario" class="control-label">Select Data Stream</label>
+                            <select id="pipeline-scenario" class="pipeline-select">
+                                <option value="telecom">Telecom Churn Logs (JSON)</option>
+                                <option value="healthcare">Healthcare Claims (CSV)</option>
+                                <option value="travel">Travel Bookings Stream (REST API)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label">Execution Controls</label>
+                            <div class="btn-group">
+                                <button id="run-pipeline-btn" class="btn btn-primary btn-icon">
+                                    <svg class="icon run-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; transition: none;">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                    <span id="run-btn-text">Run Pipeline</span>
+                                </button>
+                                <button id="reset-pipeline-btn" class="btn btn-secondary" disabled>Reset</button>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group toggle-group">
+                            <span class="control-label">Simulate Network Faults</span>
+                            <label class="switch">
+                                <input type="checkbox" id="simulate-errors">
+                                <span class="slider round"></span>
+                             </label>
+                        </div>
+
+                        <!-- Live Metrics Box -->
+                        <div class="metrics-display">
+                            <div class="metric-box">
+                                <span class="metric-label">Ingested Rows</span>
+                                <span id="metric-rows" class="metric-value">0</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-label">Throughput</span>
+                                <span id="metric-speed" class="metric-value">0/s</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-label">Quality Index</span>
+                                <span id="metric-quality" class="metric-value">100%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visualization Area -->
+                    <div class="pipeline-card pipeline-visualizer">
+                        <div class="card-glow"></div>
+                        <div class="pipeline-flow">
+                            <!-- Stage 1: Extract -->
+                            <div class="flow-step" id="step-extract">
+                                <div class="step-icon-wrapper">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </div>
+                                <span class="step-name">EXTRACT</span>
+                                <span class="step-status" id="status-extract">Idle</span>
+                            </div>
+
+                            <!-- Connector -->
+                            <div class="flow-connector">
+                                <div class="connector-line"></div>
+                                <div class="data-particles-container" id="particles-1"></div>
+                            </div>
+
+                            <!-- Stage 2: Transform -->
+                            <div class="flow-step" id="step-transform">
+                                <div class="step-icon-wrapper">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="23 4 23 10 17 10"></polyline>
+                                        <polyline points="1 20 1 14 7 14"></polyline>
+                                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                    </svg>
+                                </div>
+                                <span class="step-name">TRANSFORM</span>
+                                <span class="step-status" id="status-transform">Idle</span>
+                            </div>
+
+                            <!-- Connector -->
+                            <div class="flow-connector">
+                                <div class="connector-line"></div>
+                                <div class="data-particles-container" id="particles-2"></div>
+                            </div>
+
+                            <!-- Stage 3: Load -->
+                            <div class="flow-step" id="step-load">
+                                <div class="step-icon-wrapper">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                        <path d="M3 5V19A9 3 0 0 0 21 19V5"></path>
+                                        <path d="M3 12A9 3 0 0 0 21 12"></path>
+                                    </svg>
+                                </div>
+                                <span class="step-name">LOAD</span>
+                                <span class="step-status" id="status-load">Idle</span>
+                            </div>
+                        </div>
+
+                        <!-- Terminal console output -->
+                        <div class="pipeline-console">
+                            <div class="console-header">
+                                <div class="console-buttons">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <span class="console-title">PySpark Live Engine Output</span>
+                            </div>
+                            <div class="console-body" id="console-logs">
+                                <div class="console-line text-muted">> Ready to run pipeline. Select scenario and click "Run Pipeline".</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Experience Section -->
         <section id="experience" class="experience-section section-padding">
             <div class="container">
@@ -306,9 +439,9 @@
                             </div>
                             <div class="timeline-details-col">
                                 <ul class="timeline-bullets">
-                                    <li>Performed cohort analysis, data collection, and standardization across multiple sources to compile master databases.</li>
+                                    <li>Collected, validated, and organized datasets for internal analytics. Performed Cohort analysis to identify customer behavior trends, retention patterns, and engagement metrics for business insights.</li>
                                     <li>Built and optimized KPI dashboards used by executive stakeholders to track product metrics and resource allocations.</li>
-                                    <li>Implemented customized data quality validation scripts improving dataset accuracy and pipeline consistency by 20%.</li>
+                                    <li>Implemented data quality checks and standardization workflows, improving data accuracy and reliability by 20%.</li>
                                 </ul>
                             </div>
                         </div>
@@ -339,9 +472,8 @@
                             </div>
                             <div class="timeline-details-col">
                                 <ul class="timeline-bullets">
-                                    <li>Cleaned and preprocessed massive healthcare claims datasets using Python, SQL, and Excel.</li>
-                                    <li>Reduced missing data values and entry redundancies by 20% across relational database schemas.</li>
-                                    <li>Conducted detailed Exploratory Data Analysis (EDA) that revealed bottlenecks and improved claim processing workflows.</li>
+                                    <li>Cleaned and preprocessed large-scale healthcare claim datasets using Python, SQL, and Excel; reduced missing values and data redundancy by 20%.</li>
+                                    <li>Conducted exploratory data analysis (EDA) to identify anomalies, patterns, and trends, enabling data-driven improvements to claim processing workflows.</li>
                                 </ul>
                             </div>
                         </div>
@@ -357,22 +489,63 @@
                 <h2 class="section-title">Selected work</h2>
                 
                 <div class="projects-grid fade-up-init">
-                    <!-- Project 1 -->
-                    <div class="project-card">
+                    <!-- Project 1: Trip Buddy -->
+                    <div class="project-card clickable-project-card" data-url="https://trip-buddy-ao8c.vercel.app/">
+                        <div class="card-glow"></div>
+                        <div class="project-card-header">
+                            <div class="project-meta">
+                                <span class="project-date">Jun 2026</span>
+                                <div class="project-links">
+                                    <a href="https://trip-buddy-ao8c.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link-icon demo-link" aria-label="View Live Deployment" onclick="event.stopPropagation();">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                                        </svg>
+                                    </a>
+                                    <a href="https://github.com/venomite-taurus" target="_blank" rel="noopener noreferrer" class="project-link-icon" aria-label="View Project on GitHub" onclick="event.stopPropagation();">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <h3 class="project-title"><a href="https://trip-buddy-ao8c.vercel.app/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">Trip Buddy</a></h3>
+                        </div>
+                        <div class="project-body">
+                            <p>Developed a full-stack travel planning web app with React.js and TypeScript, allowing users to plan and manage trips through a responsive UI deployed on Vercel.</p>
+                            <p style="margin-top: 8px;">Integrated Supabase for PostgreSQL database management, user authentication, and real-time data sync.</p>
+                        </div>
+                        <div class="project-footer">
+                            <div class="tags-container">
+                                <span class="project-tag">React.js</span>
+                                <span class="project-tag">TypeScript</span>
+                                <span class="project-tag">Supabase</span>
+                                <span class="project-tag">REST API</span>
+                                <span class="project-tag">Vite</span>
+                                <span class="project-tag">AI</span>
+                                <span class="project-tag">Vercel</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Customer Churn Prediction System -->
+                    <div class="project-card clickable-project-card" data-url="https://github.com/venomite-taurus/Customer-Churn-Prediction-System-using-Machine-Learning">
                         <div class="card-glow"></div>
                         <div class="project-card-header">
                             <div class="project-meta">
                                 <span class="project-date">Feb 2026</span>
-                                <a href="https://github.com/venomite-taurus/Customer-Churn-Prediction-System-using-Machine-Learning" target="_blank" rel="noopener noreferrer" class="project-link-icon" aria-label="View Project on GitHub">
+                                <a href="https://github.com/venomite-taurus/Customer-Churn-Prediction-System-using-Machine-Learning" target="_blank" rel="noopener noreferrer" class="project-link-icon" aria-label="View Project on GitHub" onclick="event.stopPropagation();">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                                     </svg>
                                 </a>
                             </div>
-                            <h3 class="project-title">Customer Churn Prediction System</h3>
+                            <h3 class="project-title"><a href="https://github.com/venomite-taurus/Customer-Churn-Prediction-System-using-Machine-Learning" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">Customer Churn Prediction System</a></h3>
                         </div>
                         <div class="project-body">
-                            <p>Implemented an end-to-end Machine Learning pipeline on telecommunication records. Performed robust feature encoding, comprehensive EDA, and trained classifiers to power proactive customer retention strategies.</p>
+                            <p>Built an end-to-end ML pipeline on a telecom dataset – performed feature encoding, missing value treatment, and EDA to uncover churn patterns.</p>
+                            <p style="margin-top: 8px;">Trained and evaluated multiple classifiers; enabled proactive customer retention strategies through predictive insights, directly supporting business decision-making.</p>
                         </div>
                         <div class="project-footer">
                             <div class="tags-container">
@@ -384,22 +557,23 @@
                         </div>
                     </div>
 
-                    <!-- Project 2 -->
-                    <div class="project-card">
+                    <!-- Project 3: SQL Data Warehouse -->
+                    <div class="project-card clickable-project-card" data-url="https://github.com/Shubh-chunmun/SQL-Data-Warehouse">
                         <div class="card-glow"></div>
                         <div class="project-card-header">
                             <div class="project-meta">
                                 <span class="project-date">Nov 2025</span>
-                                <a href="https://github.com/Shubh-chunmun/SQL-Data-Warehouse" target="_blank" rel="noopener noreferrer" class="project-link-icon" aria-label="View Project on GitHub">
+                                <a href="https://github.com/Shubh-chunmun/SQL-Data-Warehouse" target="_blank" rel="noopener noreferrer" class="project-link-icon" aria-label="View Project on GitHub" onclick="event.stopPropagation();">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                                     </svg>
                                 </a>
                             </div>
-                            <h3 class="project-title">SQL Data Warehouse</h3>
+                            <h3 class="project-title"><a href="https://github.com/Shubh-chunmun/SQL-Data-Warehouse" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">SQL Data Warehouse</a></h3>
                         </div>
                         <div class="project-body">
-                            <p>Developed a production-grade relational data warehouse based on Fact/Dimension tables and Star Schema topology. Programmed custom ETL stages and optimized indexing schemas, boosting query retrieval efficiency by 95%.</p>
+                            <p>Designed and built a production-grade data warehouse using Star Schema with Fact and Dimension tables; performed end-to-end ETL to ingest, clean, and transform data from multiple sources.</p>
+                            <p style="margin-top: 8px;">Optimized query performance via indexing and aggregations, improving data retrieval efficiency by 95% and enabling insightful business reporting.</p>
                         </div>
                         <div class="project-footer">
                             <div class="tags-container">
@@ -408,35 +582,6 @@
                                 <span class="project-tag">Star Schema</span>
                                 <span class="project-tag">Data Modeling</span>
                                 <span class="project-tag">Indexing</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 3 -->
-                    <div class="project-card">
-                        <div class="card-glow"></div>
-                        <div class="project-card-header">
-                            <div class="project-meta">
-                                <span class="project-date">Jun 2025</span>
-                                <a href="https://github.com/venomite-taurus" target="_blank" rel="noopener noreferrer" class="project-link-icon" aria-label="View Project on GitHub">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <h3 class="project-title">AI Resume Analyzer & Recommender</h3>
-                        </div>
-                        <div class="project-body">
-                            <p>Built a full-stack AI platform incorporating LLMs and Retrieval-Augmented Generation (RAG) to parse CV profiles and recommend specific job listings. Elevated shortlisting matching accuracy by 70% and callback rates by 40%.</p>
-                        </div>
-                        <div class="project-footer">
-                            <div class="tags-container">
-                                <span class="project-tag">Python</span>
-                                <span class="project-tag">LLM</span>
-                                <span class="project-tag">RAG</span>
-                                <span class="project-tag">React.js</span>
-                                <span class="project-tag">ChromaDB</span>
-                                <span class="project-tag">PyPDF</span>
                             </div>
                         </div>
                     </div>
@@ -598,7 +743,7 @@
                             </a>
                         </div>
 
-                        <a href="Shubham_Pandey_Resume.pdf" download="Shubham_Pandey_Resume.pdf" class="btn btn-secondary btn-icon download-btn-contact" id="download-resume-contact">
+                        <a href="Shubham_Pandey_Resume.pdf" target="_blank" class="btn btn-secondary btn-icon download-btn-contact" id="download-resume-contact">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                 <polyline points="7 10 12 15 17 10"></polyline>

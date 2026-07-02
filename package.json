@@ -1,0 +1,8 @@
+{
+  "name": "shubham-pandey-portfolio",
+  "version": "1.0.0",
+  "description": "Personal Portfolio of Shubham Pandey",
+  "scripts": {
+    "dev": "npx live-server"
+  }
+}
